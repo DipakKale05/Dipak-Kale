@@ -2,10 +2,29 @@ export type AppScreen =
   | 'customer-home'
   | 'medication-detail'
   | 'order-tracking'
+  | 'login-register'
   | 'partner-portal'
   | 'trustops-fulfillment'
   | 'trustops-audit'
   | 'architecture-prd';
+
+export type UserRole = 'PATIENT' | 'PHARMACIST' | 'TRUST_OFFICER';
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  role: UserRole;
+  avatar?: string;
+  licenseNumber?: string;
+  pharmacyName?: string;
+  dob?: string;
+  deliveryAddress?: string;
+  fido2Verified?: boolean;
+  hipaaConsented?: boolean;
+  token?: string;
+}
 
 export type CustomerTab = 'home' | 'compare' | 'safety' | 'orders' | 'trust';
 

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { ASSETS } from '../data/mockData';
-import { AppScreen } from '../types';
+import { AppScreen, AuthUser } from '../types';
 
 interface CustomerHomeProps {
   onNavigate: (screen: AppScreen) => void;
   cartCount: number;
   onAddToCart: () => void;
+  currentUser?: AuthUser | null;
 }
 
-export const CustomerHome: React.FC<CustomerHomeProps> = ({ onNavigate, cartCount, onAddToCart }) => {
+export const CustomerHome: React.FC<CustomerHomeProps> = ({ onNavigate, cartCount, onAddToCart, currentUser }) => {
   const [isGuidanceOpen, setIsGuidanceOpen] = useState(false);
   const [showUrgentModal, setShowUrgentModal] = useState(false);
   const [showScanModal, setShowScanModal] = useState<'rx' | 'barcode' | null>(null);
@@ -63,9 +64,20 @@ export const CustomerHome: React.FC<CustomerHomeProps> = ({ onNavigate, cartCoun
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface animate-ping"></span>
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-error"></span>
             </button>
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-on-primary">
-              <span className="material-symbols-outlined text-[18px]">person</span>
-            </div>
+            <button
+              aria-label={currentUser ? `Account: ${currentUser.name}` : 'Sign In or Register'}
+              className="w-8 h-8 rounded-full bg-primary hover:bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary transition-all ring-1 ring-white/20 shadow-xs"
+              title={currentUser ? `Signed in as ${currentUser.name} (${currentUser.role}). Click to view or switch account.` : 'Sign in / Register'}
+              onClick={() => onNavigate('login-register')}
+            >
+              {currentUser?.avatar ? (
+                <img alt={currentUser.name} className="w-full h-full rounded-full object-cover" src={currentUser.avatar} />
+              ) : currentUser ? (
+                <span className="font-code-sm text-xs font-bold">{currentUser.name.charAt(0)}</span>
+              ) : (
+                <span className="material-symbols-outlined text-[18px]">person</span>
+              )}
+            </button>
           </div>
         </div>
       </header>

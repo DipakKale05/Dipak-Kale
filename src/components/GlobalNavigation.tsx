@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppScreen } from '../types';
+import { AppScreen, AuthUser } from '../types';
 
 interface GlobalNavigationProps {
   currentScreen: AppScreen;
@@ -7,6 +7,7 @@ interface GlobalNavigationProps {
   isMobileFrame: boolean;
   onToggleMobileFrame: () => void;
   cartCount: number;
+  currentUser?: AuthUser | null;
 }
 
 export const GlobalNavigation: React.FC<GlobalNavigationProps> = ({
@@ -15,11 +16,13 @@ export const GlobalNavigation: React.FC<GlobalNavigationProps> = ({
   isMobileFrame,
   onToggleMobileFrame,
   cartCount,
+  currentUser,
 }) => {
   const isCustomerScreen =
     currentScreen === 'customer-home' ||
     currentScreen === 'medication-detail' ||
-    currentScreen === 'order-tracking';
+    currentScreen === 'order-tracking' ||
+    currentScreen === 'login-register';
 
   return (
     <div className="w-full bg-primary text-on-primary border-b border-white/10 z-50 sticky top-0">
@@ -122,6 +125,20 @@ export const GlobalNavigation: React.FC<GlobalNavigationProps> = ({
             <span>6. Audit Logs</span>
           </button>
 
+          {/* Auth: Login & Register Button */}
+          <button
+            className={`px-2.5 py-1.5 rounded-lg font-code-sm text-xs font-bold transition-all flex items-center gap-1 ${
+              currentScreen === 'login-register'
+                ? 'bg-secondary text-on-secondary shadow-xs ring-1 ring-white/30'
+                : 'bg-white/10 text-white/90 hover:bg-white/20'
+            }`}
+            title="Authentication: Login & Registration Frame"
+            onClick={() => onNavigate('login-register')}
+          >
+            <span className="material-symbols-outlined text-[15px]">how_to_reg</span>
+            <span>Auth: Login / Register</span>
+          </button>
+
           {/* Architecture & PRD Button */}
           <button
             className={`px-2.5 py-1.5 rounded-lg font-code-sm text-xs font-bold transition-all flex items-center gap-1 ${
@@ -137,7 +154,7 @@ export const GlobalNavigation: React.FC<GlobalNavigationProps> = ({
           </button>
         </div>
 
-        {/* Right: Device Frame Toggle & Cart Quick Action */}
+        {/* Right: Device Frame Toggle & Cart Quick Action & User Profile Button */}
         <div className="flex items-center gap-2">
           {isCustomerScreen && (
             <button
@@ -151,6 +168,24 @@ export const GlobalNavigation: React.FC<GlobalNavigationProps> = ({
               <span>{isMobileFrame ? 'Phone Frame' : 'Fluid View'}</span>
             </button>
           )}
+
+          {/* User Account Quick Switch / Login Indicator */}
+          <button
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md font-code-sm text-[11px] font-bold transition-all ${
+              currentUser
+                ? 'bg-white/20 hover:bg-white/30 text-white border border-white/20'
+                : 'bg-white/10 hover:bg-white/20 text-white'
+            }`}
+            title={currentUser ? `Logged in as ${currentUser.name} (${currentUser.role}). Click to switch/logout.` : 'Click to Sign In or Register'}
+            onClick={() => onNavigate('login-register')}
+          >
+            <span className="material-symbols-outlined text-[15px]">
+              {currentUser ? 'verified_user' : 'account_circle'}
+            </span>
+            <span className="truncate max-w-[110px]">
+              {currentUser ? currentUser.name.split(' ')[0] : 'Sign In'}
+            </span>
+          </button>
 
           <div
             className="flex items-center gap-1.5 bg-secondary px-2.5 py-1 rounded-md text-white font-code-sm text-[11px] font-bold cursor-pointer hover:bg-secondary/90 transition-colors"

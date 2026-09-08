@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AppScreen } from './types';
+import { AppScreen, AuthUser } from './types';
+import { ASSETS } from './data/mockData';
 import { GlobalNavigation } from './components/GlobalNavigation';
 import { CustomerHome } from './components/CustomerHome';
 import { MedicationDetail } from './components/MedicationDetail';
@@ -8,16 +9,30 @@ import { PartnerPortal } from './components/PartnerPortal';
 import { TrustOpsFulfillment } from './components/TrustOpsFulfillment';
 import { TrustOpsAudit } from './components/TrustOpsAudit';
 import { ArchitecturePRD } from './components/ArchitecturePRD';
+import { LoginRegisterFrame } from './components/LoginRegisterFrame';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('customer-home');
   const [isMobileFrame, setIsMobileFrame] = useState<boolean>(true);
   const [cartCount, setCartCount] = useState<number>(2);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>({
+    id: 'USR-PAT-7741',
+    name: 'Sarah Connor',
+    email: 'sarah.connor@example.com',
+    phone: '+1 (555) 018-9921',
+    role: 'PATIENT',
+    avatar: ASSETS.officerElena,
+    dob: '1988-04-12',
+    deliveryAddress: '742 Evergreen Terr, Springfield',
+    hipaaConsented: true,
+    token: 'jwt_sha256_pat_9901_enc',
+  });
 
   const isCustomerScreen =
     currentScreen === 'customer-home' ||
     currentScreen === 'medication-detail' ||
-    currentScreen === 'order-tracking';
+    currentScreen === 'order-tracking' ||
+    currentScreen === 'login-register';
 
   const renderScreenContent = () => {
     switch (currentScreen) {
@@ -25,6 +40,7 @@ export default function App() {
         return (
           <CustomerHome
             cartCount={cartCount}
+            currentUser={currentUser}
             onAddToCart={() => setCartCount((prev) => prev + 1)}
             onNavigate={setCurrentScreen}
           />
@@ -38,6 +54,15 @@ export default function App() {
         );
       case 'order-tracking':
         return <OrderTracking onNavigate={setCurrentScreen} />;
+      case 'login-register':
+        return (
+          <LoginRegisterFrame
+            currentUser={currentUser}
+            onLogin={(user) => setCurrentUser(user)}
+            onLogout={() => setCurrentUser(null)}
+            onNavigate={setCurrentScreen}
+          />
+        );
       case 'partner-portal':
         return <PartnerPortal onNavigate={setCurrentScreen} />;
       case 'trustops-fulfillment':
@@ -50,6 +75,7 @@ export default function App() {
         return (
           <CustomerHome
             cartCount={cartCount}
+            currentUser={currentUser}
             onAddToCart={() => setCartCount((prev) => prev + 1)}
             onNavigate={setCurrentScreen}
           />
@@ -63,6 +89,7 @@ export default function App() {
       <GlobalNavigation
         cartCount={cartCount}
         currentScreen={currentScreen}
+        currentUser={currentUser}
         isMobileFrame={isMobileFrame}
         onNavigate={setCurrentScreen}
         onToggleMobileFrame={() => setIsMobileFrame((prev) => !prev)}
