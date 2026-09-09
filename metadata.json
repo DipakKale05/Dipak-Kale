@@ -1,6 +1,0 @@
-{
-  "name": "GenricMed",
-  "description": "Enterprise multi-tenant medicine commerce and clinical governance platform with bioequivalent medicine discovery, pharmacy dispensation, and immutable audit telemetry.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
