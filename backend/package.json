@@ -1,0 +1,39 @@
+{
+  "name": "medicalbydk-backend",
+  "version": "1.0.0",
+  "description": "Production multi-tenant backend for medicalbydk clinical governance and bioequivalent medicine platform",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "genricmed",
+    "healthcare",
+    "hipaa",
+    "multi-tenant",
+    "rls",
+    "merkle-tree"
+  ],
+  "author": "GenricMed Team",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0",
+    "vitest": "^3.0.7"
+  }
+}
